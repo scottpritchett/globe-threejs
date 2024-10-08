@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Globe Visualization</title>
+    <script src="https://cdn.skypack.dev/three@0.128.0"></script>
+    <script src="https://cdn.skypack.dev/@turf/turf@7.1.0"></script>
+</head>
+<body>
+    <script type="module">
+        import { Globe } from 'https://cdn.skypack.dev/globe-threejs';
+
+        // Create a globe instance with default textures and parameters
+        const globe = new Globe({
+            dayTexture: '../assets/8081_earthmap10k.jpg',
+            nightTexture: '../assets/8081_earthlights10k.jpg',
+            startTime: new Date(),
+            earthRadius: 5,
+            onLocationClick: function(info) {
+                console.log('Clicked location info:', info);
+            },
+            timezoneGeoJSON: '../assets/all-timezones_.geojson'
+        });
+
+        // Initialize the Three.js scene
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Add the globe to the scene
+        globe.addToScene(scene);
+
+        // Set camera position and start animation
+        camera.position.z = 15;
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
+        animate();
+    </script>
+</body>
+</html>
